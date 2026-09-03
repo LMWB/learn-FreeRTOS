@@ -81,9 +81,17 @@ osMutexId_t printfMutexHandle;
 const osMutexAttr_t printfMutex_attributes = {
   .name = "printfMutex"
 };
+/* Definitions for buttonSemaphore */
+osSemaphoreId_t buttonSemaphoreHandle;
+const osSemaphoreAttr_t buttonSemaphore_attributes = {
+  .name = "buttonSemaphore"
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
+
+static uint8_t LED_mode = 0;
+#define TOGGLE_BIT(bit)			(bit = bit ^ 0x1)
 
 /* USER CODE END FunctionPrototypes */
 
@@ -110,6 +118,10 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
+
+  /* Create the semaphores(s) */
+  /* creation of buttonSemaphore */
+  buttonSemaphoreHandle = osSemaphoreNew(1, 0, &buttonSemaphore_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -162,6 +174,9 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
+      osSemaphoreAcquire(buttonSemaphoreHandle,osWaitForever);
+      TOGGLE_BIT(LED_mode);
+
     osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
@@ -180,14 +195,18 @@ void startMyPrintfTask1(void *argument)
   /* Infinite loop */
 	// Converts 500ms safely into the correct number of ticks
 	uint32_t t1 = (500U * osKernelGetTickFreq()) / 1000U;
-	uint32_t t2 = pdMS_TO_TICKS(500);
+	uint32_t t2 = pdMS_TO_TICKS(250);
   for(;;)
   {
 	  NUCLEO_LED_toggle();
 
 
 	  // https://arm-software.github.io/CMSIS_6/main/RTOS2/group__CMSIS__RTOS__Wait.html
-	  osDelay(t1);
+	  if(LED_mode == 0){
+		  osDelay(t1);
+	  }else{
+		  osDelay(t2);
+	  }
 
 	  //osDelayUntil(500);
   }
@@ -241,6 +260,13 @@ __weak void startMyPrintfTask3(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin == B1_Pin){
+        osSemaphoreRelease(buttonSemaphoreHandle);
+	}
+}
 
 /* USER CODE END Application */
 
