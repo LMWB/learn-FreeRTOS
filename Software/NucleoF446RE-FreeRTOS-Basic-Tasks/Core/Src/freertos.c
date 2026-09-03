@@ -142,6 +142,9 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
+
+  printf("Starting FreeRTOS Demo 1\r\n");
+  printf("FreeRTOS version: %s\r\n", tskKERNEL_VERSION_NUMBER);
   /* USER CODE END RTOS_EVENTS */
 
 }
