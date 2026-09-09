@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,63 +51,63 @@
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 4 * 2,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for producer_01 */
 osThreadId_t producer_01Handle;
 const osThreadAttr_t producer_01_attributes = {
   .name = "producer_01",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 4 * 2,
   .priority = (osPriority_t) osPriorityNormal1,
 };
 /* Definitions for producer_02 */
 osThreadId_t producer_02Handle;
 const osThreadAttr_t producer_02_attributes = {
   .name = "producer_02",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 4 * 2,
   .priority = (osPriority_t) osPriorityNormal1,
 };
 /* Definitions for producer_03 */
 osThreadId_t producer_03Handle;
 const osThreadAttr_t producer_03_attributes = {
   .name = "producer_03",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 4 * 2,
   .priority = (osPriority_t) osPriorityNormal1,
 };
 /* Definitions for producer_04 */
 osThreadId_t producer_04Handle;
 const osThreadAttr_t producer_04_attributes = {
   .name = "producer_04",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 4 * 2,
   .priority = (osPriority_t) osPriorityNormal1,
 };
 /* Definitions for consumer_01 */
 osThreadId_t consumer_01Handle;
 const osThreadAttr_t consumer_01_attributes = {
   .name = "consumer_01",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 4 * 2,
   .priority = (osPriority_t) osPriorityNormal2,
 };
 /* Definitions for consumer_02 */
 osThreadId_t consumer_02Handle;
 const osThreadAttr_t consumer_02_attributes = {
   .name = "consumer_02",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 4 * 2,
   .priority = (osPriority_t) osPriorityNormal2,
 };
 /* Definitions for consumer_03 */
 osThreadId_t consumer_03Handle;
 const osThreadAttr_t consumer_03_attributes = {
   .name = "consumer_03",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 4 * 2,
   .priority = (osPriority_t) osPriorityNormal2,
 };
 /* Definitions for consumer_04 */
 osThreadId_t consumer_04Handle;
 const osThreadAttr_t consumer_04_attributes = {
   .name = "consumer_04",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 4 * 2,
   .priority = (osPriority_t) osPriorityNormal2,
 };
 /* Definitions for producer_01_queue */
@@ -286,6 +286,8 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
+  printf("Starting FreeRTOS Demo 2\r\n");
+  printf("FreeRTOS version: %s\r\n", tskKERNEL_VERSION_NUMBER);
   /* USER CODE END RTOS_EVENTS */
 
 }

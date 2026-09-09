@@ -40,11 +40,50 @@ static void HeavyTask2(void);
 #define FREQUENCY 		1 	// Hz
 #define SAMPLING_MS 	100	// milli seconds
 
-void StartDefaultTask(void *argument) {
-	while (1) {
-		NUCLEO_LED_toggle();
-		osDelay(500);
-	}
+
+// Overwrite
+// the define to make this callback work lives in FreeRTOS.h line 398
+// #define configCHECK_FOR_STACK_OVERFLOW
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
+	printf("STACK OVERFLOW: %s\r\n", pcTaskName);
+	while (1) {}
+}
+
+// static implementation of watermark measurement
+static void PrintStackWatermark(const char *name, osThreadId_t handle) {
+	UBaseType_t watermark;
+
+	watermark = uxTaskGetStackHighWaterMark((TaskHandle_t) handle);
+
+	printf("%s: %lu words (%lu bytes)\r\n",
+			name,
+			(unsigned long) watermark,
+			(unsigned long) (watermark * sizeof(StackType_t)));
+}
+
+void StartDefaultTask(void *argument)
+{
+    while (1)
+    {
+        osMutexAcquire(uart_mutexHandle, osWaitForever);
+
+        PrintStackWatermark("producer_01", producer_01Handle);
+        PrintStackWatermark("producer_02", producer_02Handle);
+        PrintStackWatermark("producer_03", producer_03Handle);
+        PrintStackWatermark("producer_04", producer_04Handle);
+
+        PrintStackWatermark("consumer_01", consumer_01Handle);
+        PrintStackWatermark("consumer_02", consumer_02Handle);
+        PrintStackWatermark("consumer_03", consumer_03Handle);
+        PrintStackWatermark("consumer_04", consumer_04Handle);
+        printf("\r\n");
+
+        osMutexRelease(uart_mutexHandle);
+
+        NUCLEO_LED_toggle();
+
+        osDelay(1000);
+    }
 }
 
 void start_producer_01(void *argument) {
@@ -90,7 +129,7 @@ void start_producer_04(void *argument) {
 	while (1) {
 		HeavyTask1();
 		HeavyTask2();
-		osDelay(1);
+		osDelay(SAMPLING_MS);
 	}
 }
 
@@ -103,7 +142,7 @@ void start_consumer_01(void *argument) {
 			printf("Consumer 01 %ld\n", value);
 			osMutexRelease(uart_mutexHandle);
 		}
-		osDelay(1);
+		osDelay(10);
 	}
 
 }
@@ -118,7 +157,7 @@ void start_consumer_02(void *argument)
 			printf("\tConsumer 02 %ld\n", value);
 			osMutexRelease(uart_mutexHandle);
 		}
-		osDelay(1);
+		osDelay(10);
 	}
 }
 
@@ -132,7 +171,7 @@ void start_consumer_03(void *argument)
 			printf("\t\tConsumer 03 %ld\n", value);
 			osMutexRelease(uart_mutexHandle);
 		}
-		osDelay(1);
+		osDelay(10);
 	}
 }
 
@@ -140,7 +179,7 @@ void start_consumer_04(void *argument)
 {
   for(;;)
   {
-    osDelay(1);
+    osDelay(10);
   }
 }
 
