@@ -1,3 +1,6 @@
+- [FreeRTOS Cheat Sheet for STM32](#FreeRTOS Cheat Sheet for STM32)
+- [FreeRTOS / CMSIS-RTOS2 Cheat Sheet for STM32](#FreeRTOS / CMSIS-RTOS2 Cheat Sheet for STM32)
+
 # FreeRTOS Cheat Sheet for STM32
 
 **Target:** STM32 + STM32CubeMX + STM32CubeIDE
@@ -1915,7 +1918,7 @@ Mutexes
 and, importantly, how they interact rather than just how their APIs look.
 
 
-# CMSIS-RTOS2 Cheat Sheet for STM32
+# FreeRTOS / CMSIS-RTOS2 Cheat Sheet for STM32
 
 **Target:** STM32 + STM32CubeMX + STM32CubeIDE
 **API:** CMSIS-RTOS2 (`osThreadNew`, `osMessageQueuePut`, `osMutexAcquire`, …)
