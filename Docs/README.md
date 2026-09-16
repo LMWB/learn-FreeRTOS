@@ -1,5 +1,6 @@
-- [FreeRTOS Cheat Sheet for STM32](#FreeRTOS Cheat Sheet for STM32)
-- [FreeRTOS / CMSIS-RTOS2 Cheat Sheet for STM32](#FreeRTOS / CMSIS-RTOS2 Cheat Sheet for STM32)
+# Table of Content
+- [FreeRTOS Cheat Sheet for STM32](#freertos-cheat-sheet-for-stm32)
+- [FreeRTOS / CMSIS-RTOS2 Cheat Sheet for STM32](#freertos--cmsis-rtos2-cheat-sheet-for-stm32)
 
 # FreeRTOS Cheat Sheet for STM32
 
